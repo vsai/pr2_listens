@@ -1,8 +1,6 @@
 #!/usr/bin/python
 
 import time, sys, rospy
-#import sys
-#import rospy
 from pr2_listens.msg import SpeechAPIResponse
 from turtlesim.msg import Velocity
 from std_msgs.msg import String
@@ -40,14 +38,12 @@ def record_audio_client():
   rospy.init_node('speech_recog_client', anonymous=True)
   #String - 1 attribute: "string record"
   pubRecord = rospy.Publisher(KEEP_SERVER_ALIVE_TOPIC, String)
-  #pubRecord = rospy.Publisher('initiateRecord', String)
   #Velocity - 2 attributes: "float32 linear", "float32 angular"
   pubAction = rospy.Publisher('/turtle1/command_velocity', Velocity)
   #APIResponse - 2 attributes: "string hypothesis", "float32 confidence"
   def callbackWrapper(data):
     callback(pubAction, data)
   subWords = rospy.Subscriber(WORDS_HEARD_TOPIC, SpeechAPIResponse, callbackWrapper)
-  #subWords = rospy.Subscriber('wordsHeard', SpeechAPIResponse, callbackWrapper)
   #keep_alive_freq_period measures how often to send the keep_alive message
   #keep in mind the TIMEOUT time for the server, as specified in configs
   keep_alive_freq_period = 7 #seconds
